@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Ratings</title>
+</head>
+<body>
+    <h1>Book Ratings System</h1>
+
+    <button onclick="createRating()">Create Rating</button>
+    <button onclick="getRatingsByBook(1)">Get Ratings for Book 1</button>
+    <button onclick="getRatingsByUser(1)">Get Ratings for User 1</button>
+
+    <script>
+        // Function to create a rating
+        async function createRating() {
+            const response = await fetch('http://localhost:8081/api/ratings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ratingValue: 5,  // Change this to the desired rating value
+                    user: { id: 1 }, // Assuming user ID is 1
+                    book: { id: 1 }  // Assuming book ID is 1
+                })
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Rating created:', data);
+            } else {
+                console.error('Failed to create rating:', response.statusText);
+            }
+        }
+
+        // Function to get ratings by book
+        async function getRatingsByBook(bookId) {
+            const response = await fetch(`http://localhost:8081/api/ratings/book/${bookId}`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Ratings for book:', data);
+            } else {
+                console.error('Failed to get ratings for book:', response.statusText);
+            }
+        }
+
+        // Function to get ratings by user
+        async function getRatingsByUser(userId) {
+            const response = await fetch(`http://localhost:8081/api/ratings/user/${userId}`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Ratings for user:', data);
+            } else {
+                console.error('Failed to get ratings for user:', response.statusText);
+            }
+        }
+    </script>
+</body>
+</html>
